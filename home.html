@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaponTech | Build • Design • Develop</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --brand-blue: #2563EB;
+            --brand-blue-hover: #1D4ED8;
+            --accent-yellow: #FFB800;
+            
+            --black: #0A0A0A;
+            --dark: #111111;
+            --white: #FFFFFF;
+            --off-white: #F3F3F0;
+            
+            --text-dark: #111827;
+            --text-gray: #4B5563;
+            --text-light: #9CA3AF;
+            
+            --border: #E5E7EB;
+            --border-dark: #222222;
+            
+            --transition: all 0.3s ease;
+        }
+
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            width: 100%;
+        }
+
+        body {
+            background-color: var(--off-white);
+            color: var(--text-gray);
+            line-height: 1.6;
+            overflow-x: clip;
+            width: 100%;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        h1, h2, h3, h4 { color: var(--text-dark); line-height: 1.2; font-family: 'Montserrat', sans-serif; }
+        .text-blue { color: var(--brand-blue); }
+
+        /* --- Sticky Navigation Header --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: linear-gradient(135deg, var(--black) 70%, #4a3800 90%, var(--accent-yellow) 120%);
+            border-bottom: 2px solid var(--accent-yellow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 70px;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem; 
+            font-weight: 800;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            height: 32px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            color: var(--white);
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a { 
+            font-weight: 500; 
+            color: var(--white); 
+            position: relative;
+        }
+        
+        .nav-links a:hover { color: var(--accent-yellow); }
+
+        .nav-links a.active { color: var(--accent-yellow); font-weight: 600; }
+        .nav-links a.active::after {
+            content: ''; position: absolute;
+            bottom: -4px; left: 0; width: 100%; height: 2px;
+            background-color: var(--accent-yellow);
+            border-radius: 2px;
+        }
+
+        .mobile-only { display: none; }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-icon {
+            font-size: 1.2rem;
+            color: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .search-icon:hover { color: var(--accent-yellow); }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        /* Buttons globally */
+        .btn {
+            display: inline-flex; justify-content: center; align-items: center;
+            padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+            border: none; transition: var(--transition); font-size: 0.95rem; text-align: center; gap: 8px;
+        }
+        .btn-blue, .btn-primary { background-color: var(--brand-blue); color: var(--white); }
+        .btn-blue:hover, .btn-primary:hover { background-color: var(--brand-blue-hover); transform: translateY(-2px); }
+        .btn-secondary { background-color: var(--white); color: var(--text-dark); border: 1px solid var(--border); }
+        .btn-secondary:hover { background-color: var(--off-white); border-color: #d1d5db; transform: translateY(-2px); }
+
+        /* --- Scroll Animation Classes --- */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.7s ease-out; }
+        .reveal-scale { opacity: 0; transform: scale(0.92); transition: all 0.7s ease-out; }
+        .reveal-active { opacity: 1 !important; transform: translate(0) scale(1) !important; }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- Auto-Sliding Banner --- */
+        .banner-container {
+            position: relative; width: 100%; overflow: hidden; background: var(--black);
+        }
+        .banner-slides { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
+        .slide { min-width: 100%; position: relative; }
+        .slide img {
+            width: 100%; height: 250px; object-fit: cover; display: block;
+        }
+        
+        .slide-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 40px 5% 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: var(--white);
+        }
+        .slide-overlay h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; margin-bottom: 5px; color: var(--white); }
+
+        .pagination {
+            position: absolute; bottom: 12px; width: 100%;
+            display: flex; justify-content: center; gap: 8px; z-index: 5;
+        }
+        .dot {
+            width: 9px; height: 9px; background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%; cursor: pointer; transition: var(--transition);
+        }
+        .dot.active { background-color: var(--white); transform: scale(1.3); }
+
+        /* --- Categories Navigation --- */
+        .categories-container {
+            display: flex; gap: 12px; padding: 15px 5%;
+            background: var(--off-white); overflow-x: auto; border-bottom: 1px solid var(--border);
+            scrollbar-width: none; 
+        }
+        .categories-container::-webkit-scrollbar { display: none; }
+        .cat-btn {
+            background-color: var(--white); color: var(--text-gray);
+            border: 1px solid var(--border); padding: 8px 20px; border-radius: 20px;
+            font-weight: 600; font-size: 13px; white-space: nowrap; cursor: pointer; transition: all 0.2s;
+        }
+        .cat-btn.active { background-color: var(--brand-blue); color: var(--white); border-color: var(--brand-blue); }
+
+        /* --- Main Feed (Responsive Grid) --- */
+        .feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+            gap: 25px;
+            padding: 30px 5% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 40vh;
+        }
+
+        .service-card {
+            background: var(--white); overflow: hidden;
+            border: 1px solid var(--border); border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .service-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--brand-blue); }
+
+        .service-image-container {
+            position: relative; width: 100%; height: 240px;
+            cursor: pointer; background-color: var(--black);
+            overflow: hidden;
+        }
+        .service-image-container img, .service-image-container video {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        .play-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 50px; height: 50px; background: rgba(10, 10, 10, 0.7);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: var(--white); font-size: 20px; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .play-overlay i { margin-left: 4px; }
+
+        .content-indicator {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(10, 10, 10, 0.75); color: var(--white);
+            padding: 5px 12px; border-radius: 20px; font-size: 12px;
+            font-weight: 600; display: flex; align-items: center; gap: 6px; pointer-events: none;
+        }
+
+        .service-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .service-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 10px;}
+        .service-title { font-size: 1.15rem; color: var(--text-dark); font-weight: 700; font-family: 'Montserrat', sans-serif;}
+        .timestamp { font-size: 12px; color: var(--text-light); font-weight: 500; white-space: nowrap;}
+
+        .service-description {
+            font-size: 14px; color: var(--text-gray); margin-bottom: 20px;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .action-buttons { display: flex; gap: 10px; margin-top: auto; }
+        .action-buttons .btn { flex: 1; padding: 10px 5px; font-size: 12px; }
+
+        /* --- Floating WhatsApp Icon --- */
+        .whatsapp-float {
+            position: fixed; bottom: 25px; right: 25px;
+            width: 60px; height: 60px; background-color: var(--brand-blue); color: var(--white); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+            cursor: pointer; z-index: 90; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        /* --- Fullscreen Content Viewer --- */
+        .content-viewer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--black); z-index: 2000; display: none; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .content-viewer.active { display: block; }
+        
+        .viewer-header {
+            position: sticky; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; color: var(--white); font-size: 18px; background: rgba(10,10,10,0.9); z-index: 20;
+        }
+        .viewer-header button {
+            background: transparent; border: none; color: inherit; cursor: pointer;
+            padding: 10px; font-size: inherit; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .viewer-header button:hover { color: var(--brand-blue); }
+        .viewer-counter-text { font-weight: 600; font-size: 16px; letter-spacing: 2px; }
+        
+        .viewer-slider-wrapper {
+            position: relative; width: 100vw; height: min(70vh, 750px); background: var(--black);
+            overflow: hidden; touch-action: pan-y;
+        }
+        .viewer-slides {
+            display: flex; height: 100%; width: 100%;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform;
+        }
+        .viewer-slide {
+            flex: 0 0 100%; width: 100vw; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .viewer-slide img, .viewer-slide video {
+            width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;
+        }
+
+        .viewer-footer { background-color: var(--white); color: var(--text-dark); padding: 25px 5%; min-height: 40vh; }
+        .viewer-footer-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+        .viewer-title { font-weight: 700; font-size: 20px; color: var(--text-dark); font-family: 'Montserrat', sans-serif; }
+        .viewer-time { font-size: 13px; color: var(--text-light); font-weight: 500; }
+        .viewer-desc { font-size: 15px; line-height: 1.6; color: var(--text-gray); }
+
+        .content-viewer.pure-mode { overflow: hidden; }
+        .content-viewer.pure-mode .viewer-header { background: rgba(10,10,10,0.5); position: absolute; }
+        .content-viewer.pure-mode .viewer-slider-wrapper { height: 100vh; position: fixed; inset: 0; z-index: 10; }
+        .content-viewer.pure-mode .viewer-footer { display: none; }
+
+        @media (min-width: 768px) { .slide img { height: 350px; } }
+        @media (max-width: 992px) {
+            .mobile-only { display: block; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px);
+                background: linear-gradient(180deg, var(--black) 0%, #1a1a1a 80%, #3d2f00 120%);
+                flex-direction: column; align-items: center; padding: 40px 0 80px 0; transition: var(--transition);
+                box-shadow: 0 10px 10px rgba(0,0,0,0.5); overflow-y: auto; -webkit-overflow-scrolling: touch;
+            }
+            .nav-links.active { left: 0; }
+            .nav-links .btn { width: 80%; max-width: 300px; margin-top: 10px; }
+            .nav-links a { color: var(--white); font-size: 1.1rem; margin-bottom: 5px; }
+        }
+        @media (max-width: 768px) {
+            .feed { grid-template-columns: 1fr; gap: 15px; padding: 15px 0 80px 0; }
+            .service-card { border-radius: 0; border-left: none; border-right: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVIGATION HEADER -->
+    <nav>
+        <a href="home.html" class="logo">
+            <img src="logo.png" alt="NaponTech Logo" class="site-logo" onerror="this.src='https://via.placeholder.com/32x32?text=N'">
+            <span class="brand-name">Napon<span class="text-blue">Tech</span></span>
+        </a>
+        
+        <div class="nav-links">
+            <a href="home.html" class="active">Home</a>
+            <a href="aboutus.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="FAQ.html" class="mobile-only">FAQ</a>
+            <a href="support.html" class="mobile-only">Support</a>
+            <a href="getstarted.html" class="btn btn-blue" style="color: var(--white);">Get Started</a>
+        </div>
+        
+        <div class="nav-actions">
+            <i class="fa-solid fa-magnifying-glass search-icon" title="Search" onclick="window.location.href='search.html'"></i>
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <!-- Banner Slider -->
+    <div class="banner-container reveal-up" id="banner">
+        <div class="banner-slides" id="banner-slides">
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=400&fit=crop" alt="Workspace">
+                <div class="slide-overlay"><h3>Custom Software Development</h3></div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=400&fit=crop" alt="Analytics">
+                <div class="slide-overlay"><h3>Practical Digital Solutions</h3></div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop" alt="Team">
+                <div class="slide-overlay"><h3>Web & Mobile Applications</h3></div>
+            </div>
+        </div>
+        <div class="pagination" id="pagination">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+        </div>
+    </div>
+
+    <!-- Category Buttons -->
+    <div class="categories-container reveal-up">
+        <button class="cat-btn active">For You</button>
+        <button class="cat-btn">Web Dev</button>
+        <button class="cat-btn">UI/UX Design</button>
+        <button class="cat-btn">Mobile Apps</button>
+        <button class="cat-btn">Cloud Architecture</button>
+        <button class="cat-btn">Digital Marketing</button>
+    </div>
+
+    <!-- Main Feed -->
+    <main class="feed" id="mainFeedContainer">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-gray);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--brand-blue); margin-bottom: 12px; display: block;"></i>
+            <p>Loading latest NaponTech content...</p>
+        </div>
+    </main>
+
+    <!-- Centralized Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Floating WhatsApp Icon -->
+    <a href="https://whatsapp.com/channel/0029VaiIqd105MUVsapGxW3H" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Master Content Viewer -->
+    <div class="content-viewer" id="content-viewer">
+        <header class="viewer-header">
+            <button type="button" id="close-viewer" aria-label="Close viewer" title="Close">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <span class="viewer-counter-text" id="viewer-counter">1/1</span>
+            <button type="button" class="viewer-share-btn" aria-label="Share content" title="Share">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+        </header>
+
+        <div class="viewer-slider-wrapper" id="viewer-slider-wrapper">
+            <div class="viewer-slides" id="viewer-slides"></div>
+        </div>
+
+        <div class="viewer-footer">
+            <div class="viewer-footer-header">
+                <div class="viewer-title" id="viewer-title">Title</div>
+                <div class="viewer-time" id="viewer-time">Time</div>
+            </div>
+            <div class="viewer-desc" id="viewer-desc">Description text...</div>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = "https://one11111111111111.onrender.com";
+
+        let observer;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Scroll Animations Observer
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-up, .reveal-scale').forEach(el => observer.observe(el));
+
+            // 2. Load Centralized Footer
+            fetch('footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    const copyrightElement = document.getElementById('copyright-year');
+                    if (copyrightElement) {
+                        copyrightElement.textContent = new Date().getFullYear();
+                    }
+                    document.querySelectorAll('#footer-container .reveal-up').forEach(el => observer.observe(el));
+                })
+                .catch(err => console.error('Error loading footer:', err));
+
+            // 3. Banner Slider Logic
+            const bannerSlides = document.getElementById('banner-slides');
+            const dots = document.querySelectorAll('.dot');
+            let bannerIndex = 0;
+            let bannerInterval;
+
+            function updateBanner(index) {
+                bannerSlides.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach(dot => dot.classList.remove('active'));
+                if (dots[index]) dots[index].classList.add('active');
+            }
+            function nextBannerSlide() {
+                bannerIndex = (bannerIndex + 1) % dots.length;
+                updateBanner(bannerIndex);
+            }
+            bannerInterval = setInterval(nextBannerSlide, 4000);
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    bannerIndex = index;
+                    updateBanner(bannerIndex);
+                    clearInterval(bannerInterval);
+                    bannerInterval = setInterval(nextBannerSlide, 4000);
+                });
+            });
+
+            // 4. Hamburger Menu Logic
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = hamburger.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    const icon = hamburger.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            });
+
+            // 5. Category Buttons Logic
+            const catBtns = document.querySelectorAll('.cat-btn');
+            catBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    catBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            // 6. Fetch Dynamic Feed
+            loadDynamicFeed();
+
+        });
+
+        /* --- PREVIEW SHARING: CANONICAL POST URL BUILDER --- */
+        function getPostUrl(postId) {
+            // Uses current origin/pathname (or server endpoint) to construct clean canonical share links
+            const currentUrl = new URL(window.location.href);
+            const baseUrl = `${currentUrl.protocol}//${currentUrl.host}/home.html`;
+            return `${baseUrl}?post=${encodeURIComponent(postId)}`;
+        }
+
+        const escapeHTML = (str) => {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+                }[tag] || tag)
+            );
+        };
+
+        // DYNAMIC FEED LOADER
+        async function loadDynamicFeed() {
+            const feedContainer = document.getElementById('mainFeedContainer');
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/posts`);
+                const data = await res.json();
+
+                if (!data.success || !data.posts || data.posts.length === 0) {
+                    feedContainer.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-gray);">
+                            <p>No content published yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                feedContainer.innerHTML = '';
+
+                data.posts.forEach((post, idx) => {
+                    const firstMedia = post.media[0] || {};
+                    const isVideo = post.media_type === 'video';
+                    const timeStr = new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const mediaJson = JSON.stringify(post.media).replace(/"/g, '&quot;');
+
+                    let mediaHtml = '';
+                    let indicatorHtml = '';
+
+                    if (isVideo) {
+                        mediaHtml = `
+                            <img src="${firstMedia.poster || firstMedia.src}" alt="${escapeHTML(post.title)}">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        `;
+                        indicatorHtml = `<div class="content-indicator"><i class="fa-solid fa-video"></i> Video</div>`;
+                    } else {
+                        mediaHtml = `<img src="${firstMedia.src}" alt="${escapeHTML(post.title)}">`;
+                        if (post.media.length > 1) {
+                            indicatorHtml = `<div class="content-indicator"><i class="fa-regular fa-clone"></i> 1/${post.media.length}</div>`;
+                        }
+                    }
+
+                    const article = document.createElement('article');
+                    article.className = `service-card reveal-up reveal-active delay-${(idx % 3) + 1}`;
+                    article.innerHTML = `
+                        <div class="service-image-container content-trigger" 
+                             data-post-id="${escapeHTML(post.post_id)}"
+                             data-time="${timeStr}"
+                             data-media="${mediaJson}"
+                             data-title="${escapeHTML(post.title)}"
+                             data-desc="${escapeHTML(post.description)}">
+                            ${mediaHtml}
+                            ${indicatorHtml}
+                        </div>
+                        
+                        <div class="service-content">
+                            <div class="service-title-row">
+                                <h2 class="service-title">${escapeHTML(post.title)}</h2>
+                                <span class="timestamp">${timeStr}</span>
+                            </div>
+                            <p class="service-description">${escapeHTML(post.description)}</p>
+                            <div class="action-buttons">
+                                <a href="getstarted.html" class="btn btn-primary"><i class="fa-solid fa-headset"></i> Chat</a>
+                                <a href="learnmore.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Learn</a>
+                                <button class="btn btn-secondary share-btn" 
+                                        data-post-id="${escapeHTML(post.post_id)}" 
+                                        data-title="${escapeHTML(post.title)}" 
+                                        data-desc="${escapeHTML(post.description)}">
+                                    <i class="fa-solid fa-share-nodes"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    feedContainer.appendChild(article);
+                    if (observer) observer.observe(article);
+                });
+
+                bindContentViewer();
+                bindShareButtons();
+                checkDeepLink();
+
+            } catch (err) {
+                console.error(err);
+                feedContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--red);">
+                        <p>Could not connect to backend server.</p>
+                    </div>
+                `;
+            }
+        }
+
+        /* --- PREVIEW SHARING: NATIVE SHARE & CLIPBOARD HANDLER --- */
+        function bindShareButtons() {
+            const shareButtons = document.querySelectorAll('.share-btn');
+            shareButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const title = btn.getAttribute('data-title');
+                    const text = btn.getAttribute('data-desc');
+                    const postId = btn.getAttribute('data-post-id');
+                    const shareUrl = getPostUrl(postId);
+                    
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: `${title} | NaponTech`,
+                                text: text,
+                                url: shareUrl
+                            });
+                        } catch (err) {
+                            console.log('Share dismissed');
+                        }
+                    } else {
+                        navigator.clipboard.writeText(shareUrl).then(() => {
+                            alert("Post link copied to clipboard with preview!");
+                        });
+                    }
+                });
+            });
+        }
+
+        /* --- CONTENT VIEWER (WITH SHARE INTEGRATION) --- */
+        function bindContentViewer() {
+            const contentTriggers = document.querySelectorAll('.content-trigger');
+            const viewer = document.getElementById('content-viewer');
+            const closeViewerBtn = document.getElementById('close-viewer');
+            const viewerSlidesContainer = document.getElementById('viewer-slides');
+            const viewerCounter = document.getElementById('viewer-counter');
+            const viewerTitle = document.getElementById('viewer-title');
+            const viewerDesc = document.getElementById('viewer-desc');
+            const viewerTime = document.getElementById('viewer-time');
+            const viewerWrapper = document.getElementById('viewer-slider-wrapper');
+            const viewerShareBtn = document.querySelector('.viewer-share-btn');
+
+            let viewerMediaData = [];
+            let currentViewerIndex = 0;
+            let isPureFullscreen = false;
+            let currentPostId = null;
+
+            function clearPostUrl() {
+                const cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete('post');
+                window.history.replaceState({}, '', cleanUrl);
+            }
+
+            contentTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    try {
+                        viewerMediaData = JSON.parse(this.getAttribute('data-media'));
+                    } catch (error) {
+                        return;
+                    }
+                    
+                    const rawTitle = this.getAttribute('data-title') || '';
+                    const safeTitle = escapeHTML(rawTitle);
+                    const rawDesc = this.getAttribute('data-desc') || '';
+                    currentPostId = this.getAttribute('data-post-id');
+
+                    viewerTitle.innerText = rawTitle;
+                    viewerDesc.innerText = rawDesc;
+                    viewerTime.innerText = this.getAttribute('data-time');
+                    currentViewerIndex = 0;
+                    isPureFullscreen = false; 
+
+                    window.history.replaceState({}, '', getPostUrl(currentPostId));
+
+                    viewerShareBtn.onclick = async () => {
+                        const shareUrl = getPostUrl(currentPostId);
+                        if (navigator.share) {
+                            try {
+                                await navigator.share({
+                                    title: `${rawTitle} | NaponTech`,
+                                    text: rawDesc,
+                                    url: shareUrl
+                                });
+                            } catch (err) {}
+                        } else {
+                            navigator.clipboard.writeText(shareUrl).then(() => alert("Post link copied!"));
+                        }
+                    };
+                    
+                    viewerSlidesContainer.innerHTML = '';
+                    viewerMediaData.forEach((media, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'viewer-slide';
+                        
+                        if (media.type === 'video') {
+                            slide.innerHTML = `<video src="${escapeHTML(media.src)}" poster="${escapeHTML(media.poster || '')}" aria-label="${safeTitle} - Video ${index + 1}" controls controlsList="nodownload noplaybackrate" disablePictureInPicture oncontextmenu="return false;"></video>`;
+                        } else {
+                            slide.innerHTML = `<img src="${escapeHTML(media.src)}" alt="${safeTitle} - Slide ${index + 1}">`;
+                        }
+                        viewerSlidesContainer.appendChild(slide);
+                    });
+
+                    updateViewerUI();
+                    viewer.classList.remove('pure-mode'); 
+                    viewer.classList.add('active');
+                    document.body.style.overflow = 'hidden'; 
+                });
+            });
+
+            viewerSlidesContainer.addEventListener('click', (e) => {
+                if(e.target.tagName === 'VIDEO') return;
+                if(e.target.tagName === 'IMG' || e.target.classList.contains('viewer-slide')) {
+                    isPureFullscreen = true;
+                    viewer.classList.add('pure-mode');
+                    viewer.scrollTop = 0;
+                }
+            });
+
+            closeViewerBtn.addEventListener('click', () => {
+                if (isPureFullscreen) {
+                    isPureFullscreen = false;
+                    viewer.classList.remove('pure-mode');
+                } else {
+                    viewer.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                    pauseAllVideos();
+                    clearPostUrl(); 
+                }
+            });
+
+            function pauseAllVideos() {
+                const videos = viewerSlidesContainer.querySelectorAll('video');
+                videos.forEach(vid => vid.pause());
+            }
+
+            function updateViewerUI() {
+                viewerSlidesContainer.style.transform = `translateX(-${currentViewerIndex * 100}%)`;
+                if(viewerMediaData.length > 1) {
+                    viewerCounter.style.display = 'block';
+                    viewerCounter.innerText = `${currentViewerIndex + 1}/${viewerMediaData.length}`;
+                } else {
+                    viewerCounter.style.display = 'none';
+                }
+                pauseAllVideos();
+            }
+
+            let vStartX = 0;
+            let vEndX = 0;
+
+            viewerWrapper.addEventListener('touchstart', (e) => {
+                vStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+
+            viewerWrapper.addEventListener('touchend', (e) => {
+                vEndX = e.changedTouches[0].screenX;
+                const threshold = 40; 
+                if (vStartX - vEndX > threshold && currentViewerIndex < viewerMediaData.length - 1) {
+                    currentViewerIndex++;
+                    updateViewerUI();
+                } else if (vEndX - vStartX > threshold && currentViewerIndex > 0) {
+                    currentViewerIndex--;
+                    updateViewerUI();
+                }
+            }, {passive: true});
+        }
+
+        /* --- DEEP LINK AUTO-TRIGGER --- */
+        function checkDeepLink() {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('post');
+            if (!postId) return;
+            const post = document.querySelector(`.content-trigger[data-post-id="${CSS.escape(postId)}"]`);
+            if (post) post.click();
+        }
+    </script>
+</body>
+</html>

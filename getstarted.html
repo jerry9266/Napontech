@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Get Started | NaponTech</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --brand-blue: #2563EB;
+            --brand-blue-hover: #1D4ED8;
+            --accent-yellow: #FFB800;
+            
+            --black: #0A0A0A;
+            --dark: #111111;
+            --white: #FFFFFF;
+            --off-white: #F3F3F0;
+            
+            --text-dark: #111827;
+            --text-gray: #4B5563;
+            --text-light: #9CA3AF;
+            
+            --border: #E5E7EB;
+            --border-dark: #222222;
+            --success-color: #10b981;
+            
+            --transition: all 0.3s ease;
+        }
+
+        /* --- Reset & Base Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        html { width: 100%; }
+        
+        body { 
+            background-color: var(--off-white); 
+            color: var(--text-gray); 
+            line-height: 1.6; 
+            overflow-x: clip; 
+            width: 100%; 
+            -webkit-font-smoothing: antialiased; 
+        }
+        
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        
+        h1, h2, h3, h4 { color: var(--text-dark); line-height: 1.3; font-family: 'Montserrat', sans-serif; }
+        h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); }
+        h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+        p { margin-bottom: 15px; }
+        .text-blue { color: var(--brand-blue); }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* --- Buttons --- */
+        .btn { 
+            display: inline-flex; justify-content: center; align-items: center; 
+            padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; 
+            border: none; transition: var(--transition); font-size: 0.95rem; text-align: center; gap: 8px; 
+            white-space: nowrap; 
+        }
+        .btn-primary { background-color: var(--brand-blue); color: var(--white); }
+        .btn-primary:hover { background-color: var(--brand-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--brand-blue); color: var(--brand-blue); }
+        .btn-outline:hover { background-color: var(--brand-blue); color: var(--white); transform: translateY(-2px); }
+        .btn-whatsapp { background-color: #25D366; color: var(--white); }
+        .btn-whatsapp:hover { background-color: #1ebc59; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-full { width: 100%; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        .btn-auth {
+            background: linear-gradient(135deg, var(--accent-yellow), #f59e0b);
+            color: var(--black);
+            font-weight: 700;
+            border-radius: 30px; 
+            padding: 10px 24px;
+            box-shadow: 0 4px 15px rgba(255, 184, 0, 0.4);
+            border: none;
+        }
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 184, 0, 0.6);
+            color: var(--black);
+        }
+
+        /* --- Navigation Header --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: linear-gradient(135deg, var(--black) 70%, #4a3800 90%, var(--accent-yellow) 120%);
+            border-bottom: 2px solid var(--accent-yellow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            height: 70px;
+        }
+        
+        .header-title {
+            font-size: 1.3rem; 
+            font-weight: 800;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+        .header-title:hover { color: var(--accent-yellow); }
+        .back-arrow { font-size: 1.2rem; } 
+
+        /* --- Scroll Animations --- */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.7s ease-out; }
+        .reveal-scale { opacity: 0; transform: scale(0.92); transition: all 0.7s ease-out; }
+        .reveal-active { opacity: 1; transform: translate(0) scale(1); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* --- Page Header --- */
+        .get-started-header { 
+            background: var(--white); 
+            padding: 60px 5% 50px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--border); 
+        }
+        .get-started-header h1 { margin-bottom: 15px; color: var(--text-dark); }
+        .get-started-header p { max-width: 600px; margin: 0 auto; font-size: 1.1rem; color: var(--text-gray); }
+
+        /* --- Options Grid --- */
+        .options-section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        
+        .option-card { 
+            background: var(--white); 
+            border-radius: 12px; 
+            padding: 40px 30px; 
+            text-align: center; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
+            transition: var(--transition); 
+            display: flex; flex-direction: column; align-items: center; height: 100%; 
+            transform: translateZ(0); 
+        }
+        .option-card:hover { 
+            transform: translateY(-8px) translateZ(0); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08); 
+            border-color: var(--brand-blue); 
+        }
+        
+        .option-icon { 
+            width: 70px; height: 70px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 1.8rem; margin-bottom: 20px; transition: var(--transition);
+        }
+        .option-card:hover .option-icon { transform: scale(1.1); }
+        
+        .icon-chat { background: rgba(37, 99, 235, 0.1); color: var(--brand-blue); }
+        .icon-wa { background: rgba(37, 211, 102, 0.1); color: #25D366; }
+        .icon-email { background: rgba(255, 184, 0, 0.15); color: #d97706; }
+        .icon-phone { background: rgba(17, 24, 39, 0.1); color: var(--text-dark); }
+
+        .option-card h3 { margin-bottom: 10px; font-size: 1.3rem; color: var(--text-dark); }
+        .option-card p { font-size: 0.95rem; color: var(--text-gray); margin-bottom: 25px; flex-grow: 1; }
+        .option-card .btn { width: 100%; }
+
+        /* --- Project Request Banner --- */
+        .project-banner { 
+            background: linear-gradient(135deg, var(--black), #0f172a); 
+            border-radius: 16px; padding: 60px 40px; color: var(--white); 
+            text-align: center; position: relative; overflow: hidden; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+        }
+        .project-banner::before { 
+            content: ''; position: absolute; top: -50%; left: -50%; 
+            width: 200%; height: 200%; 
+            background: radial-gradient(circle, rgba(255,184,0,0.15) 0%, transparent 60%); 
+            z-index: 0; pointer-events: none; 
+        }
+        .project-banner-content { position: relative; z-index: 1; }
+        .project-banner h2 { color: var(--white); margin-bottom: 15px; }
+        .project-banner p { color: var(--text-light); max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem; }
+
+        /* --- FULL SCREEN VIEWS --- */
+        .fs-view { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            height: 100dvh; width: 100%; background: var(--off-white); 
+            z-index: 2000; display: flex; flex-direction: column; 
+            transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); 
+            overflow: hidden; 
+        }
+        .fs-view.active { transform: translateX(0); }
+        
+        .fs-header { 
+            background: var(--white); padding: 0 5%; display: flex; align-items: center; gap: 15px; 
+            border-bottom: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            z-index: 10; flex-shrink: 0; height: 70px; width: 100%;
+        }
+        .fs-back-btn { 
+            background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); 
+            display: flex; align-items: center; justify-content: center; 
+            width: 40px; height: 40px; border-radius: 50%; transition: var(--transition); 
+        }
+        .fs-back-btn:hover { background: var(--off-white); color: var(--brand-blue); }
+        .fs-header h3 { font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
+        
+        .fs-content { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .form-wrapper { max-width: 700px; margin: 0 auto; padding: 40px 5%; width: 100%; overflow-y: auto; height: 100%; }
+        
+        /* --- Forms --- */
+        .form-box { background: var(--white); padding: 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; color: var(--text-dark); }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: var(--off-white); transition: var(--transition); outline: none; box-sizing: border-box; }
+        .form-control:focus { border-color: var(--brand-blue); background: var(--white); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .form-error {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #f87171;
+        }
+
+        /* --- Professional Pop-up Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-box {
+            background: var(--white);
+            max-width: 460px;
+            width: 100%;
+            border-radius: 16px;
+            padding: 35px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+        .modal-icon-circle {
+            width: 64px;
+            height: 64px;
+            background: #EFF6FF;
+            color: var(--brand-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px auto;
+        }
+        .modal-box h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .modal-box p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .modal-box .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        /* --- Footer Styles --- */
+        footer { background-color: var(--black); padding: 80px 5% 20px; border-top: none; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1.5fr; gap: 40px; margin-bottom: 50px; }
+        
+        .footer-logo { font-size: 1.3rem; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 8px; margin-bottom: 15px; }
+        .site-logo { height: 28px; width: auto; max-width: 140px; object-fit: contain; flex-shrink: 0; }
+        
+        .footer-col p { font-size: 0.9rem; color: var(--text-light); max-width: 280px; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 20px; color: var(--white); }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { font-size: 0.9rem; color: var(--text-light); }
+        .footer-col ul li a:hover { color: var(--brand-blue); }
+        .footer-services li, .footer-contact li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; margin-bottom: 15px; color: var(--text-light); }
+        .footer-services i { color: var(--brand-blue); }
+        .footer-contact i { color: var(--accent-yellow); }
+        .social-icons { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: var(--dark); border-radius: 50%; color: var(--white); font-size: 0.9rem; border: 1px solid var(--border-dark); transition: var(--transition); }
+        .social-icons a:hover { background: var(--brand-blue); border-color: var(--brand-blue); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--border-dark); font-size: 0.85rem; color: var(--text-light); }
+        .footer-bottom-links a { margin-left: 15px; color: var(--text-light); }
+        .footer-bottom-links a:hover { color: var(--brand-blue); }
+
+        /* --- Floating WhatsApp Icon --- */
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background-color: var(--brand-blue); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 90; animation: pulse 2s infinite; transition: var(--transition); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
+
+        /* --- Responsive Adaptations --- */
+        @media (max-width: 992px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-left span { font-size: 1.1rem; }
+            .btn-auth { padding: 8px 15px; font-size: 0.85rem; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .get-started-header { padding: 40px 5% 30px; }
+            .options-section { padding: 40px 5%; }
+            .project-banner { padding: 40px 20px; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .footer-logo { justify-content: center; }
+            .footer-col p { margin: 0 auto; }
+            .footer-services li, .footer-contact li { justify-content: center; }
+            .social-icons { justify-content: center; }
+            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
+            .footer-bottom-links a { margin: 0 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav>
+        <div class="nav-left">
+            <div class="header-title" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Get Started</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="404.html" class="btn btn-auth"><i class="fa-solid fa-user-circle" style="margin-right: 4px;"></i> Sign in / Sign up</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="get-started-header reveal-up">
+        <h1>How would you like to begin?</h1>
+        <p>Have a project in mind, a question, or simply want to talk? Choose how you'd like to connect with NaponTech.</p>
+    </header>
+
+    <!-- Communication Options -->
+    <section class="options-section">
+        <div class="options-grid">
+            
+            <div class="option-card reveal-up delay-1">
+                <div class="option-icon icon-chat">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <h3>Contact Support</h3>
+                <p>Send us a message and we'll get back to you.</p>
+                <button class="btn btn-primary" onclick="openView('chatView')">
+                    <i class="fa-solid fa-paper-plane"></i> Leave a Message
+                </button>
+            </div>
+
+            <div class="option-card reveal-up delay-2">
+                <div class="option-icon icon-wa">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <h3>WhatsApp</h3>
+                <p>Message us directly on WhatsApp.</p>
+                <button class="btn btn-whatsapp" onclick="openWhatsApp()">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </button>
+            </div>
+
+            <div class="option-card reveal-up delay-3">
+                <div class="option-icon icon-email">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p>Send us a direct email and tell us how we can help.</p>
+                <button class="btn btn-outline btn-full" onclick="openEmail()">
+                    <i class="fa-regular fa-envelope"></i> Send an Email
+                </button>
+            </div>
+
+            <div class="option-card reveal-up delay-4">
+                <div class="option-icon icon-phone">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <h3>Call Us</h3>
+                <p>Prefer to speak directly? Give us a call.</p>
+                <button class="btn btn-outline btn-full" onclick="makeCall()" id="callBtnText">
+                    <i class="fa-solid fa-phone"></i> Call NaponTech
+                </button>
+            </div>
+
+        </div>
+
+        <div class="project-banner reveal-scale">
+            <div class="project-banner-content">
+                <h2>Start a Project</h2>
+                <p>Tell us what you want to build. Share the details of your project, and we'll review the requirements with you.</p>
+                <button class="btn btn-primary" style="background: var(--accent-yellow); color: var(--black);" onclick="openView('projectView')">
+                    <i class="fa-solid fa-rocket"></i> Start Your Project
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FULL SCREEN VIEWS ================= -->
+
+    <!-- Contact Support View -->
+    <div class="fs-view" id="chatView">
+        <div class="fs-header">
+            <button class="fs-back-btn" onclick="closeView('chatView')" aria-label="Go Back">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h3><i class="fa-solid fa-headset text-blue" style="margin-right: 5px;"></i> Contact Support</h3>
+        </div>
+        
+        <div class="fs-content">
+            <div class="form-wrapper">
+                <div class="form-box">
+                    <p style="font-size: 0.95rem; margin-bottom: 25px; color: var(--text-gray);">Please provide your details so we can help you.</p>
+                    
+                    <form id="startChatForm" onsubmit="submitSupport(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">First Name *</label>
+                                <input type="text" id="chatFirstName" class="form-control" required maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" id="chatLastName" class="form-control" required maxlength="50">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" id="chatEmail" class="form-control" required maxlength="100">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" id="chatPhone" class="form-control" maxlength="25">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">How can we help you today? *</label>
+                                <textarea id="chatInitialMessage" class="form-control" maxlength="2000" placeholder="Type your message here..." required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="startChatBtn" style="padding: 15px;">
+                            <span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                        <div id="chatError" class="form-error"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start a Project View -->
+    <div class="fs-view" id="projectView">
+        <div class="fs-header">
+            <button class="fs-back-btn" onclick="closeView('projectView')" aria-label="Go Back">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h3><i class="fa-solid fa-file-signature text-blue" style="margin-right: 5px;"></i> Start a Project</h3>
+        </div>
+        
+        <div class="fs-content">
+            <div class="form-wrapper">
+                <div class="form-box">
+                    <h3 style="margin-bottom: 10px; color: var(--text-dark);">Project Details</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 25px; color: var(--text-gray);">Share the details of your project, and we'll review the requirements with you.</p>
+                    
+                    <form id="projectRequestForm" onsubmit="submitProject(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">First Name *</label>
+                                <input type="text" id="projFirstName" class="form-control" required maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" id="projLastName" class="form-control" required maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email *</label>
+                                <input type="email" id="projEmail" class="form-control" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone / WhatsApp</label>
+                                <input type="tel" id="projPhone" class="form-control" maxlength="25">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Service Required *</label>
+                                <select id="projService" class="form-control" required>
+                                    <option value="" disabled selected>Select a service...</option>
+                                    <option value="Website Development">Website Development</option>
+                                    <option value="Custom Software">Custom Software</option>
+                                    <option value="Mobile App Development">Mobile App Development</option>
+                                    <option value="UI/UX Design">UI/UX Design</option>
+                                    <option value="Cybersecurity">Cybersecurity</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Project Description *</label>
+                                <textarea id="projDescription" class="form-control" placeholder="Tell us briefly about what you want to build..." maxlength="3000" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Budget Range (Optional)</label>
+                                <select id="projBudget" class="form-control">
+                                    <option value="">Select budget range...</option>
+                                    <option value="< $1000">Less than $1,000</option>
+                                    <option value="$1000 - $5000">$1,000 - $5,000</option>
+                                    <option value="$5000 - $10000">$5,000 - $10,000</option>
+                                    <option value="$10000+">$10,000+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Preferred Timeline (Optional)</label>
+                                <select id="projTimeline" class="form-control">
+                                    <option value="">Select timeline...</option>
+                                    <option value="ASAP">As soon as possible</option>
+                                    <option value="1-3 Months">1 - 3 Months</option>
+                                    <option value="3-6 Months">3 - 6 Months</option>
+                                    <option value="Flexible">Flexible</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="submitProjectBtn" style="padding: 15px;">
+                            <span>Submit Project Request</span> <i class="fa-solid fa-rocket"></i>
+                        </button>
+                        <div id="projectError" class="form-error"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Success Pop-up Modal -->
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3>Message Sent</h3>
+            <p>Your message has been received successfully. We’ll get back to you shortly.</p>
+            <button type="button" class="btn btn-primary" onclick="closeSuccessModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- Centralized Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Floating WhatsApp Icon -->
+    <a href="https://whatsapp.com/channel/0029VaiIqd105MUVsapGxW3H" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Join our WhatsApp Channel">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Interactive Scripts -->
+    <script>
+        const BACKEND_URL = "https://one11111111111111.onrender.com";
+
+        const NAPON_CONFIG = {
+            whatsappNumber: '2348142769726', 
+            emailAddress: 'hello@napontech.com',
+            phoneNumber: '+2348142769726',
+            displayPhone: '+234 814 276 9726'
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            /* --- LOAD CENTRALIZED FOOTER --- */
+            fetch('footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    
+                    const currentYear = new Date().getFullYear();
+                    const copyrightElement = document.getElementById('copyright-year');
+                    if (copyrightElement) copyrightElement.textContent = currentYear;
+
+                    const animatedElements = document.querySelectorAll('#footer-container .reveal-up');
+                    animatedElements.forEach(el => observer.observe(el));
+                })
+                .catch(err => console.error('Error loading footer:', err));
+
+            // Populate dynamic contact fields
+            const callBtn = document.getElementById('callBtnText');
+            if (callBtn) {
+                callBtn.innerHTML = `<i class="fa-solid fa-phone"></i> Call ${NAPON_CONFIG.displayPhone}`;
+            }
+
+            /* --- SCROLL ANIMATIONS --- */
+            const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const animatedElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+
+        // Communication Functions
+        function openWhatsApp() { window.open(`https://wa.me/${NAPON_CONFIG.whatsappNumber}`, '_blank', 'noopener,noreferrer'); }
+        function openEmail() { window.location.href = `mailto:${NAPON_CONFIG.emailAddress}`; }
+        function makeCall() { window.location.href = `tel:${NAPON_CONFIG.phoneNumber}`; }
+
+        // Fullscreen View Controller
+        function openView(viewId) {
+            document.getElementById(viewId).classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeView(viewId) {
+            document.getElementById(viewId).classList.remove('active');
+            document.body.style.overflow = ''; 
+        }
+
+        // Modal Controls
+        function openSuccessModal() {
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+            // Close active fullscreen views
+            closeView('chatView');
+            closeView('projectView');
+        }
+
+        // 1. Contact Support Form Submission
+        async function submitSupport(event) {
+            event.preventDefault();
+            const btn = document.getElementById('startChatBtn');
+            const errBox = document.getElementById('chatError');
+
+            const firstName = document.getElementById('chatFirstName').value.trim();
+            const lastName = document.getElementById('chatLastName').value.trim();
+            const email = document.getElementById('chatEmail').value.trim();
+            const phone = document.getElementById('chatPhone').value.trim();
+            const message = document.getElementById('chatInitialMessage').value.trim();
+
+            errBox.style.display = 'none';
+            btn.innerHTML = `Sending... <i class="fa-solid fa-spinner fa-spin"></i>`;
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        subject: 'Support Request',
+                        message,
+                        category: 'contact'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    document.getElementById('startChatForm').reset();
+                    openSuccessModal();
+                } else {
+                    throw new Error(data.error || 'Failed to submit support request.');
+                }
+            } catch (err) {
+                errBox.style.display = 'block';
+                errBox.textContent = err.message || 'Could not connect to the server. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>`;
+            }
+        }
+
+        // 2. Start a Project Form Submission
+        async function submitProject(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitProjectBtn');
+            const errBox = document.getElementById('projectError');
+
+            const firstName = document.getElementById('projFirstName').value.trim();
+            const lastName = document.getElementById('projLastName').value.trim();
+            const email = document.getElementById('projEmail').value.trim();
+            const phone = document.getElementById('projPhone').value.trim();
+            const service = document.getElementById('projService').value;
+            const description = document.getElementById('projDescription').value.trim();
+            const budget = document.getElementById('projBudget').value || 'Not specified';
+            const timeline = document.getElementById('projTimeline').value || 'Not specified';
+
+            const fullMessage = `Service: ${service}\nBudget Range: ${budget}\nTimeline: ${timeline}\n\nProject Overview:\n${description}`;
+
+            errBox.style.display = 'none';
+            btn.innerHTML = `Submitting... <i class="fa-solid fa-spinner fa-spin"></i>`;
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        subject: service,
+                        message: fullMessage,
+                        category: 'get_started'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    document.getElementById('projectRequestForm').reset();
+                    openSuccessModal();
+                } else {
+                    throw new Error(data.error || 'Failed to submit project request.');
+                }
+            } catch (err) {
+                errBox.style.display = 'block';
+                errBox.textContent = err.message || 'Could not connect to the server. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Submit Project Request</span> <i class="fa-solid fa-rocket"></i>`;
+            }
+        }
+    </script>
+</body>
+</html>
